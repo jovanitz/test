@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { v4 } from 'uuid';
-import { API } from '../../helpers';
-
-const getOrderFilm = film => {
-  const url = film.url.trim();
-  const sizeUrl = film.url.length;
-  const order = film.url.substring(sizeUrl - 2, sizeUrl - 1);
-
-  return order;
-}
+import { API, getIdUrl } from '../../helpers';
 
 const renderFilm = film => {
   const { title, episode_id, director, order } = film;
@@ -40,7 +32,7 @@ class Home extends Component {
     .then(res => {
       const { data = {} } = res;
       const { results = [] } = data;
-      const normalizeResults = results.map(film => ({ ...film, order: getOrderFilm(film) }));
+      const normalizeResults = results.map(film => ({ ...film, order: getIdUrl(film.url) }));
       const sortResults = normalizeResults.sort((a, b) => a.order - b.order);
       this.renderAllFilms(sortResults);
     })
