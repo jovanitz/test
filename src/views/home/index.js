@@ -3,15 +3,23 @@ import axios from 'axios';
 import { v4 } from 'uuid';
 import { API } from '../../helpers';
 
+const getOrderFilm = film => {
+  const url = film.url.trim();
+  const sizeUrl = film.url.length;
+  const order = film.url.substring(sizeUrl - 2, sizeUrl - 1);
+
+  return order;
+}
+
 const renderFilm = film => {
-  const { title, episode_id, director } = film;
+  const { title, episode_id, director, order } = film;
 
   return (
     <div key={ v4() }>
       <h2>{ title }</h2>
-      <h3>{ episode_id }</h3>
+      <h3>{ order }</h3>
       <p>{ director }</p>
-      <a href={ `/characters/${ episode_id }` }>characters</a>
+      <a href={ `/characters/${ order }` }>characters</a>
     </div>
   )
 }
@@ -32,7 +40,8 @@ class Home extends Component {
     .then(res => {
       const { data = {} } = res;
       const { results = [] } = data;
-      const sortResults = results.sort((a, b) => a.episode_id - b.episode_id);
+      const normalizeResults = results.map(film => ({ ...film, order: getOrderFilm(film) }));
+      const sortResults = normalizeResults.sort((a, b) => a.order - b.order);
       this.renderAllFilms(sortResults);
     })
     .catch(e => new Error(e));
