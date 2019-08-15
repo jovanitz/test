@@ -7,7 +7,7 @@ const renderFilm = film => {
   const { title, director, order } = film;
 
   return (
-    <div key={ v4() }>
+    <div className="card" key={ v4() }>
       <h2>{ title }</h2>
       <h3>{ order }</h3>
       <p>{ director }</p>
@@ -47,8 +47,8 @@ class Home extends Component {
     const { films } = this.state;
 
     return (
-      <div>
-        <div>{ films }</div>
+      <div className="container">
+        { films }
       </div>
     );
   }

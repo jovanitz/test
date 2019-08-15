@@ -16,13 +16,13 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  position: relative
-}
+  position: relative;
 
-.card:hover {
+  &:hover {
     transform: scale(1.1);
     transition: .3s ease;
   }
+}
 
 .pagination {
   width: 100%;
