@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { API, getIdUrl } from '../../helpers';
 
 const renderFilm = film => {
-  const { title, episode_id, director, order } = film;
+  const { title, director, order } = film;
 
   return (
     <div key={ v4() }>

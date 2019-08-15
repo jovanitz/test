@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Loading from 'react-loading-components';
 import { API, getIdUrl } from '../../helpers';
 import { pagination, renderCharacter } from './index-data';
 
@@ -12,11 +13,12 @@ class Characters extends Component {
       characters: [],
       count: 0,
       page: 0,
-      loading: false,
+      loading: true,
     };
   }
 
   getCharactersByPage = page => {
+    this.setState({ loading: true });
     const { charactersIds, count } = this.state;
     const init = page * PAGE_SIZE;
     const end = init + 10;
@@ -61,7 +63,8 @@ class Characters extends Component {
         genders,
         eyeColors,
         filmNames,
-        characters: characters.map(character => renderCharacter(character))
+        characters: characters.map(character => renderCharacter(character)),
+        loading: false,
       })
     });
   }
@@ -84,11 +87,12 @@ class Characters extends Component {
   }
 
   componentDidMount() {
-    this.getCharactersIds();
+    // this.getCharactersIds();
   }
 
   render() {
     const { characters, page, count, loading } = this.state;
+    console.log(loading);
     const renderPagination = !loading
       ? pagination({
           count,
@@ -97,11 +101,17 @@ class Characters extends Component {
           callback: num => this.getCharactersByPage(num)
         })
       : undefined;
+    
+    const renderContent = !loading
+      ? characters
+      : <div className='loading'>
+          <Loading type='puff' width={ 60 } fill='#529404' />
+        </div>;
 
     return (
-      <div>
+      <div className="joshua">
         { renderPagination }
-        { characters }
+        { renderContent }
       </div>
     );
   }
